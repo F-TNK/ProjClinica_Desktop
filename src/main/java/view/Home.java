@@ -33,7 +33,6 @@ public class Home extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         welcomeSign = new javax.swing.JLabel();
-        nomeDisplay = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         agendarDrDaniel = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -53,11 +52,6 @@ public class Home extends javax.swing.JFrame {
         welcomeSign.setFont(new java.awt.Font("Segoe UI Black", 3, 36)); // NOI18N
         welcomeSign.setForeground(new java.awt.Color(200, 246, 246));
         welcomeSign.setText("BEM VINDO");
-
-        nomeDisplay.setBackground(new java.awt.Color(255, 255, 255));
-        nomeDisplay.setFont(new java.awt.Font("Segoe UI Black", 3, 36)); // NOI18N
-        nomeDisplay.setForeground(new java.awt.Color(200, 246, 246));
-        nomeDisplay.setText("NOME");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 3, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(200, 246, 246));
@@ -111,10 +105,7 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(welcomeSign, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nomeDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(welcomeSign, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(56, 56, 56)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,15 +125,13 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(67, 67, 67)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(welcomeSign, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nomeDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(welcomeSign, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
@@ -170,7 +159,7 @@ public class Home extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 691, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +180,7 @@ public class Home extends javax.swing.JFrame {
         for(MedicoBean md : lista){
             model.addRow(new Object[]{
                 
-            })
+            });
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -245,7 +234,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel nomeDisplay;
     private javax.swing.JLabel welcomeSign;
     // End of variables declaration//GEN-END:variables
 }

@@ -47,4 +47,26 @@ public class MedicoDAO {
         }
         return lista;
     }
+    
+    public List<MedicoBean> listar(){
+            List<MedicoBean> medicos = new ArrayList<>();
+            try {
+                Connection conn = Conexao.conectar();
+                PreparedStatement stmt = null;
+                ResultSet rs = null;
+
+                stmt =conn.prepareStatement(
+                    "SELECT * FROM medicos");
+
+                rs = stmt.executeQuery();
+                while (rs.next()){
+                    MedicoBean medico = new MedicoBean();
+                    medico.setId(rs.getInt("id"));
+                    medico.setNome(rs.getString("nome"));
+                    medico.setEspecializacao(rs.getString("especializacao"));
+                    medico.add(medico);
+                } rs.close(); stmt.close(); conn.close();
+            } catch (SQLException e) {e.printStackTrace(); }
+            return medicos;
+        }
 }
