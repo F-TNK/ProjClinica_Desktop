@@ -171,16 +171,10 @@ public class Home extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) tabelaMedico.getModel();
-        
-        
         MedicoDAO dao = new MedicoDAO();
-        List<MedicoBean> lista = (List<MedicoBean>) dao.listarMedicos();
-        
-        for(MedicoBean md : lista){
-            model.addRow(new Object[]{
-                
-            });
+
+        for (MedicoBean m : dao.listar()) {
+            jComboBox1.addItem(m.getNome());
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 

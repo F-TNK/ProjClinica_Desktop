@@ -64,7 +64,7 @@ public class MedicoDAO {
                     medico.setId(rs.getInt("id"));
                     medico.setNome(rs.getString("nome"));
                     medico.setEspecializacao(rs.getString("especializacao"));
-                    medico.add(medico);
+                    medicos.add(medico);
                 } rs.close(); stmt.close(); conn.close();
             } catch (SQLException e) {e.printStackTrace(); }
             return medicos;
