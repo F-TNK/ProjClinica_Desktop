@@ -26,7 +26,6 @@ public class Calendario {
     }
     
     
-
     public int getAno() {
         Calendar c = Calendar.getInstance();
         ano = c.get(Calendar.YEAR);

@@ -5,6 +5,7 @@ model\UsuarioBean.class
 model\Calendario.class
 view\Home$1.class
 view\Login$2.class
+view\Home$5.class
 view\Inicio.class
 conexao\Conexao.class
 view\Login$4.class

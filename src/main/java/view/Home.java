@@ -11,6 +11,7 @@ import java.util.Calendar;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 /**
  *
@@ -26,7 +27,6 @@ public class Home extends javax.swing.JFrame {
         carregarMedicos();
         
         carregarAnos();
-        carregarMeses();
     }
     
     private void carregarMedicos() {
@@ -46,13 +46,49 @@ public class Home extends javax.swing.JFrame {
     }
     
     private void carregarMeses() {
+        mesBox.removeAllItems(); 
+        // Limpa o combo box, quando troca de ano precisa ser esvaziado
+        // se nao lista o proximo ano abaixo
         
+        String[] nomesMeses = {
+            "Janeiro", "Fevereiro", "Março", "Abril", 
+            "Maio", "Junho", "Julho", "Agosto", 
+            "Setembro", "Outubro", "Novembro", "Dezembro"
+        };
+        
+        Calendario cal = new Calendario();
+        int anoAtual = cal.getAno();
+        int mesAtual = cal.getMes();
+        
+        int anoSelec = Integer.valueOf(anoBox.getSelectedItem().toString());
+        // .getSelectedItem() =retorna um objeto (int, string, double, etc.)
+        // nesse caso retorna ao sistema a opcao selecionada na combo box
+        
+        int mesInicio = 0;
+        if (anoSelec == anoAtual){
+            mesInicio = mesAtual;
+        }
+        
+        for (int i = mesInicio; i< 12; i++){
+            String nomeMes = nomesMeses[i];
+            mesBox.addItem(nomeMes);
+        }
         
     }
     
     private void carregarDias() {
-        Calendario calDia  = new Calendario();
+        Calendario cal = new Calendario();
+        int anoSelec = Integer.valueOf(anoBox.getSelectedItem().toString());
+        int mesSelec = mesBox.getSelectedIndex();
         
+        YearMonth yearMonthObj = YearMonth.of(anoSelec, mesSelec);
+        int daysInMonth = yearMonthObj.lengthOfMonth();
+        
+        for (int i = 1; i < daysInMonth; i++){
+            String diaMes = Integer.valueOf(i).toString();
+            diaBox.addItem(diaMes);
+//              diaBox.addItem(String.valueOf(i));
+        }
         
     }
 
@@ -118,6 +154,13 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        mesBox.setEnabled(false);
+        mesBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mesBoxActionPerformed(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(200, 246, 246));
         jLabel1.setText("1. Selecione um médico");
@@ -140,6 +183,8 @@ public class Home extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(200, 246, 246));
         jLabel4.setText("5. Selecione uma horario disponivel");
+
+        diaBox.setEnabled(false);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(200, 246, 246));
@@ -234,12 +279,21 @@ public class Home extends javax.swing.JFrame {
 
     private void anoBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anoBoxActionPerformed
         // TODO add your handling code here:
-        
+//        Object item =anoBox.getSelectedItem();
+//        if (item != null) {
+//            carregarMeses(item.toString());
+//        }
+        carregarMeses();
     }//GEN-LAST:event_anoBoxActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void mesBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesBoxActionPerformed
+        // TODO add your handling code here:
+//        carregarDias();
+    }//GEN-LAST:event_mesBoxActionPerformed
 
     /**
      * @param args the command line arguments
