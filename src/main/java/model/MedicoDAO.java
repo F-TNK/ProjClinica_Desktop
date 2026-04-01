@@ -55,8 +55,7 @@ public class MedicoDAO {
                 PreparedStatement stmt = null;
                 ResultSet rs = null;
 
-                stmt =conn.prepareStatement(
-                    "SELECT * FROM medicos");
+                stmt =conn.prepareStatement("SELECT * FROM medicos");
 
                 rs = stmt.executeQuery();
                 while (rs.next()){

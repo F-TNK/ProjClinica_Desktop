@@ -14,26 +14,43 @@ import javax.swing.JOptionPane;
  * @author ftana
  */
 public class Conexao {
+    private static Connection conn = null;
+    
     private static final String url = "jdbc:mysql://localhost:3306/gerenciador";
     private static final String user = "root";
     private static final String senha = "fabio";
     
-    public static Connection conectar(){
-        Connection conn = null;
+    private Conexao() {
+    }
+    
+    public static synchronized Connection conectar(){
         try {
-            conn = DriverManager.getConnection(url, user, senha);
+            if (conn == null || conn.isClosed()){
+                conn = DriverManager.getConnection(url, user, senha);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return conn;
     }
     
-    public void testarConexao() {
-        Connection conn = conectar();
-        if (conn == null) {
-            JOptionPane.showMessageDialog(null, "Erro ao conectar");
-        } else {
-            JOptionPane.showMessageDialog(null, "Conectado com sucesso");
-        }
-    }
+//    public static Connection conectar(){
+//        Connection conn = null;
+//        try {
+//            conn = DriverManager.getConnection(url, user, senha);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return conn;
+//    }
+//    
+//    public void testarConexao() {
+//        Connection conn = conectar();
+//        if (conn == null) {
+//            JOptionPane.showMessageDialog(null, "Erro ao conectar");
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Conectado com sucesso");
+//        }
+//    }
+    
 }
