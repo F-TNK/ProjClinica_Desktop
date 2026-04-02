@@ -91,25 +91,53 @@ public class Home extends javax.swing.JFrame {
     }
     
     void carregarDias(String mes) {
-        Calendario cal = new Calendario();
-        int anoSelec = Integer.valueOf(anoBox.getSelectedItem().toString());
-        int mesSelec = mesBox.getSelectedIndex();
         
-        YearMonth yearMonthObj = YearMonth.of(anoSelec, mesSelec);
-        int daysInMonth = yearMonthObj.lengthOfMonth();
-        
-        for (int i = 1; i < daysInMonth; i++){
-            String diaMes = Integer.valueOf(i).toString();
-            diaBox.addItem(diaMes);
-//              diaBox.addItem(String.valueOf(i));
+        if (mes == null || mesBox.getSelectedIndex() <= 0) {
+            diaBox.setEnabled(false);
+            diaBox.removeAllItems();
+            diaBox.addItem("-- Selecione --");
+            return;
         }
+        
+        diaBox.removeAllItems();
+        diaBox.addItem("-- Selecione --");
+        
+        int anoSelec = Integer.parseInt(anoBox.getSelectedItem().toString());
+        int mesSelec = mesBox.getSelectedIndex() - 1;
+        //-1 porque a primeira opcao eh -- Selecione --
+        
+        Calendar cal = Calendar.getInstance();
+        cal.set(anoSelec, mesSelec, 1);
+        int maxDias = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        
+        Calendar c = Calendar.getInstance();
+        int anoAtual = c.get(Calendar.YEAR);
+        int mesAtual = c.get(Calendar.MONTH);
+        int diaAtual = c.get(Calendar.DAY_OF_MONTH);
+        
+        int diaInicial = 1;
+        if(anoSelec == anoAtual && mesSelec == mesAtual) {
+            diaInicial = diaAtual;
+        }
+        
+        // Add so dias uteis
+        for (int i = diaInicial; i <= maxDias; i++) {
+            cal.set(anoSelec, mesSelec, i);
+            int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
+            
+            //Monday = 2, Tuesday = 3...
+            if(diaSemana >= Calendar.MONDAY && diaSemana<= Calendar.FRIDAY) {
+                diaBox.addItem(String.valueOf(i));
+            }
+        }
+        diaBox.setEnabled(true);
         
     }
 
-    public boolean isWeekday(LocalDate date) {
-        DayOfWeek day = date.getDayOfWeek();
-        return day != DayOfWeek.SATURDAY && day != DayOfWeek.SUNDAY;
-    }
+//    public boolean isWeekday(LocalDate date) {
+//        DayOfWeek day = date.getDayOfWeek();
+//        return day != DayOfWeek.SATURDAY && day != DayOfWeek.SUNDAY;
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -294,11 +322,11 @@ public class Home extends javax.swing.JFrame {
 
     private void anoBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anoBoxActionPerformed
         // TODO add your handling code here:
-//        Object item =anoBox.getSelectedItem();
-//        if (item != null) {
-//            carregarMeses(item.toString());
-//        }
-        carregarMeses();
+        Object item = anoBox.getSelectedItem();
+        if (item != null) {
+            carregarMeses(item.toString());
+        }
+//        carregarMeses();
     }//GEN-LAST:event_anoBoxActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
@@ -307,7 +335,10 @@ public class Home extends javax.swing.JFrame {
 
     private void mesBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesBoxActionPerformed
         // TODO add your handling code here:
-//        carregarDias();
+        Object item = mesBox.getSelectedItem();
+        if (item != null) {
+            carregarDias(item.toString());
+        }
     }//GEN-LAST:event_mesBoxActionPerformed
 
     /**
