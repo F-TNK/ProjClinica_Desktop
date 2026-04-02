@@ -20,6 +20,7 @@ public class Conexao {
     private static final String user = "root";
     private static final String senha = "1234";
     
+    
     private Conexao() {
     }
     
