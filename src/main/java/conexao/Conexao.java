@@ -18,7 +18,7 @@ public class Conexao {
     
     private static final String url = "jdbc:mysql://localhost:3306/gerenciador";
     private static final String user = "root";
-    private static final String senha = "fabio";
+    private static final String senha = "1234";
     
     private Conexao() {
     }
