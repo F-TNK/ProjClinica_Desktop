@@ -4,10 +4,14 @@
  */
 package view;
 
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
 import model.MedicoBean;
 import model.MedicoDAO;
+import model.Calendario;
+import java.util.Calendar;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 /**
  *
@@ -20,6 +24,77 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+        carregarMedicos();
+        
+        carregarAnos();
+    }
+    
+    private void carregarMedicos() {
+        MedicoDAO dao = new MedicoDAO();
+
+        for (MedicoBean medicos : dao.listar()) {
+            medicoBox.addItem(medicos.getNome());
+        }
+    }
+    
+    private void carregarAnos(){
+        Calendario calAno = new Calendario();
+        
+        for (int i = 0; i < 2; i++){
+            anoBox.addItem(String.valueOf(calAno.getAno() + i));
+        }
+    }
+    
+    private void carregarMeses() {
+        mesBox.removeAllItems(); 
+        // Limpa o combo box, quando troca de ano precisa ser esvaziado
+        // se nao lista o proximo ano abaixo
+        
+        String[] nomesMeses = {
+            "Janeiro", "Fevereiro", "Março", "Abril", 
+            "Maio", "Junho", "Julho", "Agosto", 
+            "Setembro", "Outubro", "Novembro", "Dezembro"
+        };
+        
+        Calendario cal = new Calendario();
+        int anoAtual = cal.getAno();
+        int mesAtual = cal.getMes();
+        
+        int anoSelec = Integer.valueOf(anoBox.getSelectedItem().toString());
+        // .getSelectedItem() =retorna um objeto (int, string, double, etc.)
+        // nesse caso retorna ao sistema a opcao selecionada na combo box
+        
+        int mesInicio = 0;
+        if (anoSelec == anoAtual){
+            mesInicio = mesAtual;
+        }
+        
+        for (int i = mesInicio; i< 12; i++){
+            String nomeMes = nomesMeses[i];
+            mesBox.addItem(nomeMes);
+        }
+        
+    }
+    
+    private void carregarDias() {
+        Calendario cal = new Calendario();
+        int anoSelec = Integer.valueOf(anoBox.getSelectedItem().toString());
+        int mesSelec = mesBox.getSelectedIndex();
+        
+        YearMonth yearMonthObj = YearMonth.of(anoSelec, mesSelec);
+        int daysInMonth = yearMonthObj.lengthOfMonth();
+        
+        for (int i = 1; i < daysInMonth; i++){
+            String diaMes = Integer.valueOf(i).toString();
+            diaBox.addItem(diaMes);
+//              diaBox.addItem(String.valueOf(i));
+        }
+        
+    }
+
+    public boolean isWeekday(LocalDate date) {
+        DayOfWeek day = date.getDayOfWeek();
+        return day != DayOfWeek.SATURDAY && day != DayOfWeek.SUNDAY;
     }
 
     /**
@@ -33,17 +108,18 @@ public class Home extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         welcomeSign = new javax.swing.JLabel();
-        nomeDisplay = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         agendarDrDaniel = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        medicoBox = new javax.swing.JComboBox<>();
+        anoBox = new javax.swing.JComboBox<>();
+        mesBox = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
+        diaBox = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,11 +130,6 @@ public class Home extends javax.swing.JFrame {
         welcomeSign.setForeground(new java.awt.Color(200, 246, 246));
         welcomeSign.setText("BEM VINDO");
 
-        nomeDisplay.setBackground(new java.awt.Color(255, 255, 255));
-        nomeDisplay.setFont(new java.awt.Font("Segoe UI Black", 3, 36)); // NOI18N
-        nomeDisplay.setForeground(new java.awt.Color(200, 246, 246));
-        nomeDisplay.setText("NOME");
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 3, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(200, 246, 246));
         jLabel5.setText("AGENDE SEU HORARIO COM UM DE NOSSOS PROFISSIONAIS");
@@ -68,17 +139,27 @@ public class Home extends javax.swing.JFrame {
         agendarDrDaniel.setForeground(new java.awt.Color(0, 204, 204));
         agendarDrDaniel.setText("<html>AGENDAR<br>CONSULTA</html>");
 
-        jComboBox1.setBackground(new java.awt.Color(102, 102, 102));
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        medicoBox.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        medicoBox.setForeground(new java.awt.Color(255, 255, 255));
+        medicoBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                medicoBoxActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        anoBox.setToolTipText("");
+        anoBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anoBoxActionPerformed(evt);
+            }
+        });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        mesBox.setEnabled(false);
+        mesBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mesBoxActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(200, 246, 246));
@@ -86,17 +167,28 @@ public class Home extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(200, 246, 246));
-        jLabel2.setText("2. Selecione o dia da semana");
+        jLabel2.setText("2. Selecione um ano");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(200, 246, 246));
-        jLabel3.setText("3. Selecione o horario");
+        jLabel3.setText("3. Uma mês");
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(200, 246, 246));
-        jLabel4.setText("4. Selecione uma data disponivel");
+        jLabel4.setText("5. Selecione uma horario disponivel");
+
+        diaBox.setEnabled(false);
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(200, 246, 246));
+        jLabel6.setText("4. Um dia");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,52 +203,53 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(welcomeSign, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(nomeDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(welcomeSign, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(56, 56, 56)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(medicoBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel2))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                                                .addComponent(jLabel2)
+                                                .addComponent(anoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel3)
-                                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(mesBox, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel3))
+                                            .addGap(41, 41, 41)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel6)
+                                                .addComponent(diaBox, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addComponent(jComboBox4, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel4)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(67, 67, 67)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(welcomeSign, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nomeDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(welcomeSign, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(medicoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(anoBox, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mesBox, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(diaBox, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -170,7 +263,7 @@ public class Home extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 691, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,20 +273,27 @@ public class Home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void medicoBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicoBoxActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) tabelaMedico.getModel();
-        
-        
-        MedicoDAO dao = new MedicoDAO();
-        List<MedicoBean> lista = (List<MedicoBean>) dao.listarMedicos();
-        
-        for(MedicoBean md : lista){
-            model.addRow(new Object[]{
-                
-            })
-        }
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_medicoBoxActionPerformed
+
+    private void anoBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anoBoxActionPerformed
+        // TODO add your handling code here:
+//        Object item =anoBox.getSelectedItem();
+//        if (item != null) {
+//            carregarMeses(item.toString());
+//        }
+        carregarMeses();
+    }//GEN-LAST:event_anoBoxActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void mesBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesBoxActionPerformed
+        // TODO add your handling code here:
+//        carregarDias();
+    }//GEN-LAST:event_mesBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,17 +335,18 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agendarDrDaniel;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> anoBox;
+    private javax.swing.JComboBox<String> diaBox;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel nomeDisplay;
+    private javax.swing.JComboBox<String> medicoBox;
+    private javax.swing.JComboBox<String> mesBox;
     private javax.swing.JLabel welcomeSign;
     // End of variables declaration//GEN-END:variables
 }
