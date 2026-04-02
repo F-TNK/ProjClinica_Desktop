@@ -45,48 +45,50 @@ public class Home extends javax.swing.JFrame {
         }
     }
     
-    void carregarMeses(String ano) {
-        if (ano == null || anoBox.getSelectedIndex() <= 0) {
-            mesBox.setEnabled(false);
-            mesBox.removeAllItems();
-            mesBox.addItem("-- Selecione --");
-            diaBox.setEnabled(false);
-            diaBox.removeAllItems();
-            diaBox.addItem("-- Selecione --");
-            return;
-        }
-        
-        // .removeAllItems() - Limpa o combo box, quando troca de
-                            // ano precisa ser esvaziado se nao 
-                            // lista o proximo ano abaixo
+    private void carregarMeses() {
+        mesBox.removeAllItems(); 
+        // Limpa o combo box, quando troca de ano precisa ser esvaziado
+        // se nao lista o proximo ano abaixo
         
         String[] nomesMeses = {
             "Janeiro", "Fevereiro", "Março", "Abril", 
             "Maio", "Junho", "Julho", "Agosto", 
             "Setembro", "Outubro", "Novembro", "Dezembro"
         };
-        int anoSelec = Integer.parseInt(ano);
-        Calendar c = Calendar.getInstance();
-        int anoAtual = c.get(Calendar.YEAR);
-        int mesAtual = c.get(Calendar.MONTH);
         
-//        int anoSelec = Integer.valueOf(anoBox.getSelectedItem().toString());
+        Calendario cal = new Calendario();
+        int anoAtual = cal.getAno();
+        int mesAtual = cal.getMes();
+        
+        int anoSelec = Integer.valueOf(anoBox.getSelectedItem().toString());
         // .getSelectedItem() =retorna um objeto (int, string, double, etc.)
         // nesse caso retorna ao sistema a opcao selecionada na combo box
         
-        mesBox.setEnabled(true);
-        mesBox.removeAllItems();
-        mesBox.addItem("-- Selecione --");
-        
-        int mesInicial = (anoSelec == anoAtual) ? mesAtual : 0;
-        
-        for (int i = mesInicial; i< 12; i++){
-            mesBox.addItem(nomesMeses[i]);
+        int mesInicio = 0;
+        if (anoSelec == anoAtual){
+            mesInicio = mesAtual;
         }
         
-        diaBox.removeAllItems();
-        diaBox.addItem("-- Selecione --");
-        diaBox.setEnabled(false);
+        for (int i = mesInicio; i< 12; i++){
+            String nomeMes = nomesMeses[i];
+            mesBox.addItem(nomeMes);
+        }
+        
+    }
+    
+    private void carregarDias() {
+        Calendario cal = new Calendario();
+        int anoSelec = Integer.valueOf(anoBox.getSelectedItem().toString());
+        int mesSelec = mesBox.getSelectedIndex();
+        
+        YearMonth yearMonthObj = YearMonth.of(anoSelec, mesSelec);
+        int daysInMonth = yearMonthObj.lengthOfMonth();
+        
+        for (int i = 1; i < daysInMonth; i++){
+            String diaMes = Integer.valueOf(i).toString();
+            diaBox.addItem(diaMes);
+//              diaBox.addItem(String.valueOf(i));
+        }
         
     }
     
