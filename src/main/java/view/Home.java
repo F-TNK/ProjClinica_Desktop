@@ -126,18 +126,20 @@ public class Home extends javax.swing.JFrame {
             int diaSemana = cal.get(Calendar.DAY_OF_WEEK);
             
             //Monday = 2, Tuesday = 3...
-            if(diaSemana >= Calendar.MONDAY && diaSemana<= Calendar.FRIDAY) {
+            if(diaSemana > Calendar.SUNDAY && diaSemana < Calendar.SATURDAY) {
                 diaBox.addItem(String.valueOf(i));
             }
+            
+            
         }
         diaBox.setEnabled(true);
         
     }
 
-//    public boolean isWeekday(LocalDate date) {
-//        DayOfWeek day = date.getDayOfWeek();
-//        return day != DayOfWeek.SATURDAY && day != DayOfWeek.SUNDAY;
-//    }
+    public boolean isWeekday(LocalDate date) {
+        DayOfWeek day = date.getDayOfWeek();
+        return day != DayOfWeek.SATURDAY && day != DayOfWeek.SUNDAY;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
