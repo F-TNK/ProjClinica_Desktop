@@ -31,7 +31,8 @@ public class Home extends javax.swing.JFrame {
     
     private void carregarMedicos() {
         MedicoDAO dao = new MedicoDAO();
-
+        
+        medicoBox.addItem("-- Selecione o médico --");
         for (MedicoBean medicos : dao.listar()) {
             medicoBox.addItem(medicos.getNome());
         }
@@ -59,12 +60,7 @@ public class Home extends javax.swing.JFrame {
         // .removeAllItems() - Limpa o combo box, quando troca de
                             // ano precisa ser esvaziado se nao 
                             // lista o proximo ano abaixo
-        
-        String[] nomesMeses = {
-            "Janeiro", "Fevereiro", "Março", "Abril", 
-            "Maio", "Junho", "Julho", "Agosto", 
-            "Setembro", "Outubro", "Novembro", "Dezembro"
-        };
+                            
         int anoSelec = Integer.parseInt(ano);
         Calendar c = Calendar.getInstance();
         int anoAtual = c.get(Calendar.YEAR);
@@ -79,6 +75,13 @@ public class Home extends javax.swing.JFrame {
         mesBox.addItem("-- Selecione --");
         
         int mesInicial = (anoSelec == anoAtual) ? mesAtual : 0;
+        
+        String[] nomesMeses = {
+            "Janeiro", "Fevereiro", "Março", "Abril", 
+            "Maio", "Junho", "Julho", "Agosto", 
+            "Setembro", "Outubro", "Novembro", "Dezembro"
+        };
+        
         
         for (int i = mesInicial; i< 12; i++){
             mesBox.addItem(nomesMeses[i]);
@@ -104,6 +107,7 @@ public class Home extends javax.swing.JFrame {
         
         int anoSelec = Integer.parseInt(anoBox.getSelectedItem().toString());
         int mesSelec = mesBox.getSelectedIndex() - 1;
+        System.out.println(mesSelec);
         //-1 porque a primeira opcao eh -- Selecione --
         
         Calendar cal = Calendar.getInstance();
