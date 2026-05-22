@@ -10,4 +10,24 @@ package model;
  */
 public class Meses {
     
+    public class Mes {
+        private String nome;
+        private int valor;
+        // valor numerico dos meses
+
+        public Mes(String nome, int valor) {
+            this.nome = nome;
+            this.valor = valor;
+        }
+
+        public int getValor() {
+            return valor;
+        }
+
+        @Override
+        public String toString() {
+            return nome;
+        }
+    }
+    
 }
